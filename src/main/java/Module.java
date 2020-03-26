@@ -5,6 +5,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * Class Name : Module
+ * Description : This will contain all utility methods
+ */
 public class Module {
 
     public static void convertPdfToTxtFile(String filePath) throws IOException {
