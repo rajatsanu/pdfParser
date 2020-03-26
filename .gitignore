@@ -1,2 +1,8 @@
+*.project
+*.class
+*.classpath
 /target/
-*.idea/
+*.idea
+/test-report/
+pdfReader.iml
+/bin/
