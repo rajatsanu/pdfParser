@@ -36,7 +36,7 @@ public class ExcelModule {
             workbook.write(outputStream);
             workbook.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("In catch createTemplateExcel");
         }
     }
 

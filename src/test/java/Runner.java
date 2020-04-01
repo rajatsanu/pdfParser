@@ -25,22 +25,52 @@ public class Runner {
             File folder = new File(folderPath);
             File[] listOfFiles = folder.listFiles();
             for (File file : listOfFiles) {
-                if (file.isFile()) {
-                    String filePath = System.getProperty("user.dir") + "\\src\\main\\resources\\" + currentFolderName +
-                            "\\" + file.getName();
-                    System.out.println("PDF to read : " + filePath);
-                    String textPath = Module.convertPdfToTxtFile(filePath);
-                    String pdfValueAsString = Module.readPDF(filePath);
-                    if(!checkFileCreated){
-                        checkFileCreated = true ;
-                        ExcelModule.createTemplateExcel(excelPath,currentFolderName);
+                if(file.getName().contains(".pdf")){
+                    if (file.isFile()) {
+                        String filePath = System.getProperty("user.dir") + "\\src\\main\\resources\\" + currentFolderName +
+                                "\\" + file.getName();
+                        System.out.println("PDF to read : " + filePath);
+                        String data = Module.convertPdfToText1(filePath);
+                        if(!checkFileCreated){
+                            checkFileCreated = true ;
+                        //    ExcelModule.createTemplateExcel(excelPath,currentFolderName);
+                        }
+                       // System.out.println("data : \n " + data);
+                        Extractor(currentFolderName,data);
+                    }else{
+                        System.out.println("File Not Present : " + file.getName());
                     }
-                    System.out.println("pdfValueAsString \n" + pdfValueAsString);
                 }
             }
         }
 
 
     }
+
+
+    public static void Extractor(String currenFolderName, String data){
+        String add1=null,add2=null,add3=null;
+        switch (currenFolderName) {
+            case "Sigma" :
+            case "sigma" :
+                add1 = Module.sigmaExtractDataAddress1(data);
+                add2 = Module.sigmaExtractDataAddress2(data);
+                add3 = Module.sigmaExtractDataAddress3(data);
+                break;
+
+            case "Nuvias" :
+            case "nuvias" :
+                add1 = Module.nuviasExtractDataAddress1(data);
+                break;
+
+
+
+
+        }
+
+
+
+    }
+
 
 }
