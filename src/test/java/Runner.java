@@ -16,14 +16,15 @@ public class Runner {
         String[] arrayFolder = folderName.split(",");
 
         boolean checkFileCreated = false, firstColumnRequired = false ;
-        String timeStamp = new SimpleDateFormat("yyyy-MM-dd-HHmm").format(new Date());
-        String excelPath = System.getProperty("user.dir") + "\\src\\main\\resources\\output\\Result_" + timeStamp + ".xlsx";
+        String timeStamp = new SimpleDateFormat("yyyy-MM-dd-HHmmss").format(new Date());
+        String excelPath = System.getProperty("user.dir") + "\\src\\main\\resources\\output\\Result_" + timeStamp + ".xls";
 
         for (String currentFolderName : arrayFolder) {
             System.out.println("Current Folder Name : " + currentFolderName);
             String folderPath = System.getProperty("user.dir") + "\\src\\main\\resources\\" + currentFolderName + "\\";
             File folder = new File(folderPath);
             File[] listOfFiles = folder.listFiles();
+            int rowCount = 1 ;
             for (File file : listOfFiles) {
                 if(file.getName().contains(".pdf")){
                     if (file.isFile()) {
@@ -33,10 +34,14 @@ public class Runner {
                         String data = Module.convertPdfToText1(filePath);
                         if(!checkFileCreated){
                             checkFileCreated = true ;
-                        //    ExcelModule.createTemplateExcel(excelPath,currentFolderName);
+                            ExcelModule.createTemplateExcel(excelPath,currentFolderName);
                         }
                        // System.out.println("data : \n " + data);
-                        Extractor(currentFolderName,data);
+                        String[] address = new String[4];
+                        address = Extractor(currentFolderName,data);
+                        address[3] = file.getName().replace(".pdf","");
+                        ExcelModule.updateDataExcel(address,rowCount,excelPath,currentFolderName);
+                        rowCount++;
                     }else{
                         System.out.println("File Not Present : " + file.getName());
                     }
@@ -48,25 +53,27 @@ public class Runner {
     }
 
 
-    public static void Extractor(String currenFolderName, String data){
-        String add1=null,add2=null,add3=null;
+    public static String[] Extractor(String currenFolderName, String data){
+        String[] address = new String[4];
         switch (currenFolderName) {
             case "Sigma" :
             case "sigma" :
-                add1 = Module.sigmaExtractDataAddress1(data);
-                add2 = Module.sigmaExtractDataAddress2(data);
-                add3 = Module.sigmaExtractDataAddress3(data);
+                address[0] = Module.sigmaExtractDataAddress1(data);
+                address[1] = Module.sigmaExtractDataAddress2(data);
+                address[2] = Module.sigmaExtractDataAddress3(data);
                 break;
 
             case "Nuvias" :
             case "nuvias" :
-                add1 = Module.nuviasExtractDataAddress1(data);
+                address[0] = Module.nuviasExtractDataAddress1(data);
                 break;
 
 
 
 
         }
+
+        return address;
 
 
 

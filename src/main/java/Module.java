@@ -1,7 +1,6 @@
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import com.spire.pdf.*;
-
 import java.io.*;
 import java.util.Properties;
 
@@ -24,14 +23,13 @@ public class Module {
     public static String convertPdfToText1(String filePath) {
         StringBuilder sb = null;
         try {
-            File file = new File(filePath);
             PdfDocument pdf = new PdfDocument();
             pdf.loadFromFile(filePath);
             sb = new StringBuilder();
             for (PdfPageBase page : (Iterable<PdfPageBase>) pdf.getPages()) {
                 sb.append(page.extractText(true));
             }
-            writeDocumentToTxtFile(sb.toString(), filePath.replace(".pdf", ".txt"));
+            //writeDocumentToTxtFile(sb.toString(), filePath.replace(".pdf", ".txt"));
             pdf.close();
         } catch (Exception e) {
             System.out.println("In catch convertPdfToText1");
@@ -71,7 +69,8 @@ public class Module {
 
     public static String returnConfigValue(String key) throws Exception {
         String path = System.getProperty("user.dir") + "\\src\\main\\resources\\config.properties";
-        try (InputStream input = new FileInputStream(path)) {
+        try {
+            InputStream input = new FileInputStream(path);
             Properties prop = new Properties();
             prop.load(input);
             return prop.getProperty(key);
@@ -94,7 +93,7 @@ public class Module {
             }
         }
         System.out.println("Address 1 : \n" + address.replace("null", ""));
-        return address;
+        return address.replace("null", "");
     }
 
     public static String sigmaExtractDataAddress2(String data) {
@@ -117,7 +116,7 @@ public class Module {
             }
         }
         System.out.println("Address 2 : \n" + address.replace("null", ""));
-        return address;
+        return address.replace("null", "");
     }
 
     public static String sigmaExtractDataAddress3(String data) {
@@ -140,7 +139,7 @@ public class Module {
             }
         }
         System.out.println("Address 3 : \n" + address.replace("null", ""));
-        return address;
+        return address.replace("null", "");
     }
 
     public static String nuviasExtractDataAddress1(String data) {
